@@ -24,14 +24,14 @@ function FlipDigit({ digit, isDark, size = 'sm', isDeep = false }: { digit: stri
     widthClass = 'w-14 h-20';
     textClass = 'text-4xl';
   } else if (size === 'lg') {
-    widthClass = 'w-24 h-36';
-    textClass = 'text-6xl';
+    widthClass = 'w-14 h-22 sm:w-24 sm:h-36';
+    textClass = 'text-4xl sm:text-6xl';
   } else if (size === 'xl') {
-    widthClass = 'w-32 h-44';
-    textClass = 'text-8xl';
+    widthClass = 'w-16 h-26 sm:w-32 sm:h-44';
+    textClass = 'text-5xl sm:text-8xl';
   } else if (size === '2xl') {
-    widthClass = 'w-44 h-60';
-    textClass = 'text-[9.5rem]';
+    widthClass = 'w-20 h-32 sm:w-44 sm:h-60';
+    textClass = 'text-6xl sm:text-[9.5rem]';
   }
   
   const bgClass = isDeep 
@@ -83,17 +83,17 @@ function FlipClock({ seconds, isDark, size = 'sm', isDeep = false }: FlipClockPr
     gapClass = 'gap-1.5';
     colonGap = 'gap-2 px-1';
   } else if (size === 'lg') {
-    dotSize = 'w-3 h-3';
-    gapClass = 'gap-2.5';
-    colonGap = 'gap-3 px-1.5';
+    dotSize = 'w-1.5 h-1.5 sm:w-3 sm:h-3';
+    gapClass = 'gap-1.5 sm:gap-2.5';
+    colonGap = 'gap-2 px-1 sm:gap-3 sm:px-1.5';
   } else if (size === 'xl') {
-    dotSize = 'w-4 h-4';
-    gapClass = 'gap-4';
-    colonGap = 'gap-4 px-2';
+    dotSize = 'w-2 h-2 sm:w-4 sm:h-4';
+    gapClass = 'gap-2 sm:gap-4';
+    colonGap = 'gap-2.5 px-1 sm:gap-4 sm:px-2';
   } else if (size === '2xl') {
-    dotSize = 'w-5 h-5';
-    gapClass = 'gap-5';
-    colonGap = 'gap-5 px-3';
+    dotSize = 'w-3 h-3 sm:w-5 sm:h-5';
+    gapClass = 'gap-3 sm:gap-5';
+    colonGap = 'gap-3 px-1.5 sm:gap-5 sm:px-3';
   }
 
   return (
@@ -600,14 +600,14 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
             /* POMODORO VIEW */
             <div className="text-center space-y-6 z-10 flex flex-col items-center w-full py-4">
               {/* Thin and light rectangular progress style countdown visualizer */}
-              <div className="relative w-[36rem] h-[18rem] max-w-full flex items-center justify-center">
-                <svg viewBox="0 0 320 160" className="w-full h-full select-none" style={{ color: isDark ? '#E05275' : '#1A1A1A' }}>
+              <div className="relative w-full max-w-[40rem] aspect-[1.8/1] flex items-center justify-center">
+                <svg viewBox="0 0 380 210" className="absolute inset-0 w-full h-full select-none" style={{ color: isDark ? '#E05275' : '#1A1A1A' }}>
                   {/* Outer Case Track - thinner and lighter */}
                   <rect
                     x="8"
                     y="8"
-                    width="304"
-                    height="144"
+                    width="364"
+                    height="194"
                     rx="16"
                     ry="16"
                     fill={isDark ? 'rgba(255, 255, 255, 0.01)' : 'rgba(0, 0, 0, 0.005)'}
@@ -619,8 +619,8 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                   <motion.rect
                     x="8"
                     y="8"
-                    width="304"
-                    height="144"
+                    width="364"
+                    height="194"
                     rx="16"
                     ry="16"
                     fill="none"
@@ -956,14 +956,14 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                 /* POMODORO DEEP VIEW */
                 <div className="text-center space-y-12 flex flex-col items-center w-full py-6">
                   {/* Giant thin and light rectangular progress visualizer */}
-                  <div className="relative w-[52rem] h-[28rem] flex items-center justify-center max-w-full">
-                    <svg viewBox="0 0 440 240" className="w-full h-full select-none" style={{ color: '#E05275' }}>
+                  <div className="relative w-full max-w-[58rem] aspect-[1.5/1] flex items-center justify-center">
+                    <svg viewBox="0 0 500 320" className="absolute inset-0 w-full h-full select-none" style={{ color: '#E05275' }}>
                       {/* Outer Case Track - thinner and lighter */}
                       <rect
                         x="12"
                         y="12"
-                        width="416"
-                        height="216"
+                        width="476"
+                        height="296"
                         rx="24"
                         ry="24"
                         fill="rgba(255, 255, 255, 0.005)"
@@ -975,8 +975,8 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                       <motion.rect
                         x="12"
                         y="12"
-                        width="416"
-                        height="216"
+                        width="476"
+                        height="296"
                         rx="24"
                         ry="24"
                         fill="none"

@@ -424,7 +424,7 @@ export default function CalendarView({ selectedDate, onSelectDate, tasks, catego
 
   return (
     <div 
-      className={`rounded-3xl border shadow-lg relative overflow-hidden transition-all duration-700 min-h-[640px] h-[640px] flex flex-col bg-stone-900 ${
+      className={`rounded-3xl border shadow-lg relative overflow-hidden transition-all duration-700 min-h-[720px] h-[720px] flex flex-col bg-stone-900 ${
         viewMode === 'cover' 
           ? 'border-stone-200 shadow-[0_12px_40px_rgba(0,0,0,0.08),_0_2px_4px_rgba(0,0,0,0.03)]' 
           : `${calendarBorder} shadow-black/25`
@@ -593,12 +593,12 @@ export default function CalendarView({ selectedDate, onSelectDate, tasks, catego
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            className="w-full h-full min-h-[640px] flex flex-col justify-between"
+            className="w-full h-full min-h-[720px] flex flex-col justify-between"
           >
             {/* Dark glass overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-black/70 rounded-3xl pointer-events-none z-0" />
 
-            <div className="relative z-10 m-1.5 pt-9 px-5 pb-5 flex flex-col h-full min-h-[570px] bg-transparent rounded-[22px]">
+            <div className="relative z-10 m-1.5 pt-9 px-5 pb-5 flex flex-col h-full min-h-[650px] bg-transparent rounded-[22px]">
               {/* Year View Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
@@ -748,13 +748,13 @@ export default function CalendarView({ selectedDate, onSelectDate, tasks, catego
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            className="w-full h-full min-h-[640px] flex flex-col justify-between"
+            className="w-full h-full min-h-[720px] flex flex-col justify-between"
           >
             {/* 3D Poster Canvas Shade overlay over the photo for rich organic depth and guaranteed legibility */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/65 rounded-3xl pointer-events-none z-0" />
 
             {/* Fully transparent inner container so the background photo is 100% visible */}
-            <div className="relative z-10 m-1.5 pt-9 px-5 pb-5 flex flex-col justify-between h-full min-h-[570px] bg-transparent rounded-[22px]">
+            <div className="relative z-10 m-1.5 pt-9 px-5 pb-5 flex flex-col justify-between h-full min-h-[650px] bg-transparent rounded-[22px]">
               {/* Header section with artistic month title */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                 <div className="flex items-center gap-3">
