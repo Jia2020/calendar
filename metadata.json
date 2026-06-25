@@ -1,0 +1,10 @@
+{
+  "name": "Remix: Remix: 智能语音日历清单",
+  "description": "支持语音智能输入、自然语言解析、自动提醒、优先级排序的高颜值个人任务日历清单。",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
