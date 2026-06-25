@@ -112,62 +112,8 @@ export default function App() {
         console.error("Failed to parse stored tasks:", e);
       }
     } else {
-      // Seed initial beautiful mock tasks for demonstration
-      const todayStr = new Date().toISOString().substring(0, 10);
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowStr = tomorrow.toISOString().substring(0, 10);
-
-      const seedTasks: Task[] = [
-        {
-          id: 'seed-1',
-          date: todayStr,
-          time: '10:00',
-          content: '💡 试试顶部的 AI 语音功能！比如录入：“明天上午10点提醒我开会”',
-          priority: 'high',
-          completed: false,
-          hasReminder: true,
-          reminderTime: '10:00',
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: 'seed-recurring',
-          date: todayStr,
-          time: '08:00',
-          content: '🧘 每日晨间呼吸静心 (周期性重复任务)',
-          priority: 'low',
-          completed: false,
-          hasReminder: false,
-          isRecurring: true,
-          recurrence: 'daily',
-          completedDates: [],
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: 'seed-2',
-          date: todayStr,
-          time: '14:30',
-          content: '🛒 去生鲜超市采购牛排和水果',
-          priority: 'low',
-          completed: false,
-          hasReminder: false,
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: 'seed-3',
-          date: tomorrowStr,
-          time: '09:00',
-          content: '🚀 提交项目周报，并整理下周计划任务',
-          priority: 'medium',
-          completed: false,
-          hasReminder: true,
-          reminderTime: '09:00',
-          createdAt: new Date().toISOString()
-        }
-      ];
-
-      setTasks(seedTasks);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(seedTasks));
+      setTasks([]);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify([]));
     }
   }, []);
 

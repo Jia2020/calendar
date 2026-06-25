@@ -12,31 +12,46 @@ import { doesTaskMatchDate, isTaskCompletedOnDate } from '../utils/taskUtils';
 interface FlipClockProps {
   seconds: number;
   isDark: boolean;
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  isDeep?: boolean;
 }
 
-function FlipDigit({ digit, isDark, size = 'sm' }: { digit: string; isDark: boolean; size?: 'sm' | 'lg' }) {
-  const widthClass = size === 'lg' ? 'w-10 h-14' : 'w-6 h-9';
-  const textClass = size === 'lg' ? 'text-3xl' : 'text-lg';
+function FlipDigit({ digit, isDark, size = 'sm', isDeep = false }: { digit: string; isDark: boolean; size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'; isDeep?: boolean }) {
+  let widthClass = 'w-6 h-9';
+  let textClass = 'text-lg';
+
+  if (size === 'md') {
+    widthClass = 'w-14 h-20';
+    textClass = 'text-4xl';
+  } else if (size === 'lg') {
+    widthClass = 'w-24 h-36';
+    textClass = 'text-6xl';
+  } else if (size === 'xl') {
+    widthClass = 'w-32 h-44';
+    textClass = 'text-8xl';
+  } else if (size === '2xl') {
+    widthClass = 'w-44 h-60';
+    textClass = 'text-[9.5rem]';
+  }
   
+  const bgClass = isDeep 
+    ? 'bg-white text-black border border-neutral-200/80 shadow-white/10' 
+    : 'border-neutral-800/80 bg-neutral-950 text-white';
+
   return (
     <div 
-      className={`relative flex flex-col items-center justify-center rounded-lg shadow-md border overflow-hidden ${widthClass} ${
-        isDark 
-          ? 'bg-[#2A1D22] border-white/10 shadow-black/50 text-[#E05275]' 
-          : 'bg-[#FAF9F6] border-black/10 shadow-black/5 text-black'
-      }`}
+      className={`relative flex flex-col items-center justify-center rounded-2xl shadow-2xl border overflow-hidden ${bgClass} ${widthClass}`}
       style={{ perspective: '400px' }}
     >
       {/* Top Half subtle shade */}
-      <div className="absolute top-0 inset-x-0 h-1/2 bg-black/[0.08]" />
+      <div className={`absolute top-0 inset-x-0 h-1/2 ${isDeep ? 'bg-black/[0.04]' : 'bg-black/[0.25]'}`} />
       
       {/* Horizontal divider line */}
-      <div className={`absolute inset-x-0 top-1/2 h-[1.5px] z-10 ${isDark ? 'bg-black/50' : 'bg-black/10'}`} />
+      <div className={`absolute inset-x-0 top-1/2 h-[1.5px] z-10 ${isDeep ? 'bg-black/10' : 'bg-black/60'}`} />
 
       {/* Number with 3D Flip effect using Framer Motion */}
       <AnimatePresence mode="popLayout">
-        <motion.span
+         <motion.span
           key={digit}
           initial={{ rotateX: -80, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
@@ -52,32 +67,50 @@ function FlipDigit({ digit, isDark, size = 'sm' }: { digit: string; isDark: bool
   );
 }
 
-function FlipClock({ seconds, isDark, size = 'sm' }: FlipClockProps) {
+function FlipClock({ seconds, isDark, size = 'sm', isDeep = false }: FlipClockProps) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   
   const mStr = mins.toString().padStart(2, '0');
   const sStr = secs.toString().padStart(2, '0');
 
-  const dotSize = size === 'lg' ? 'w-2 h-2' : 'w-1.5 h-1.5';
-  const gapClass = size === 'lg' ? 'gap-1.5' : 'gap-1';
-  const colonGap = size === 'lg' ? 'gap-2 px-1' : 'gap-1.5 px-0.5';
+  let dotSize = 'w-1.5 h-1.5';
+  let gapClass = 'gap-1';
+  let colonGap = 'gap-1.5 px-0.5';
+
+  if (size === 'md') {
+    dotSize = 'w-2 h-2';
+    gapClass = 'gap-1.5';
+    colonGap = 'gap-2 px-1';
+  } else if (size === 'lg') {
+    dotSize = 'w-3 h-3';
+    gapClass = 'gap-2.5';
+    colonGap = 'gap-3 px-1.5';
+  } else if (size === 'xl') {
+    dotSize = 'w-4 h-4';
+    gapClass = 'gap-4';
+    colonGap = 'gap-4 px-2';
+  } else if (size === '2xl') {
+    dotSize = 'w-5 h-5';
+    gapClass = 'gap-5';
+    colonGap = 'gap-5 px-3';
+  }
 
   return (
     <div className={`flex items-center ${gapClass}`}>
       {/* Minutes */}
-      <FlipDigit digit={mStr[0]} isDark={isDark} size={size} />
-      <FlipDigit digit={mStr[1]} isDark={isDark} size={size} />
+      <FlipDigit digit={mStr[0]} isDark={isDark} size={size} isDeep={isDeep} />
+      <FlipDigit digit={mStr[1]} isDark={isDark} size={size} isDeep={isDeep} />
 
       {/* Colon Separator */}
       <div className={`flex flex-col ${colonGap} animate-pulse shrink-0`}>
-        <div className={`rounded-full ${dotSize} ${isDark ? 'bg-[#E05275]' : 'bg-black'}`} />
-        <div className={`rounded-full ${dotSize} ${isDark ? 'bg-[#E05275]' : 'bg-black'}`} />
+        <div className={`rounded-full ${dotSize} ${isDeep ? 'bg-neutral-300' : 'bg-neutral-500'}`} />
+        <div className={`rounded-full ${dotSize} ${isDeep ? 'bg-neutral-300' : 'bg-neutral-500'}`} />
       </div>
 
       {/* Seconds */}
-      <FlipDigit digit={sStr[0]} isDark={isDark} size={size} />
-      <FlipDigit digit={sStr[1]} isDark={isDark} size={size} />
+      <FlipDigit digit={sStr[0]} isDark={isDark} size={size} isDeep={isDeep} />
+      <FlipDigit digit={sStr[1]} isDark={isDark} size={size} isDeep={isDeep} />
     </div>
   );
 }
@@ -565,38 +598,50 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
 
           {activeTab === 'pomodoro' ? (
             /* POMODORO VIEW */
-            <div className="text-center space-y-6 z-10 flex flex-col items-center">
-              {/* Circular progress with beautiful center numbers */}
-              <div className="relative w-44 h-44 flex items-center justify-center">
-                <svg className="w-full h-full transform -rotate-90">
-                  <circle
-                    cx="88"
-                    cy="88"
-                    r="80"
-                    stroke={isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)'}
-                    strokeWidth="8"
-                    fill="transparent"
+            <div className="text-center space-y-6 z-10 flex flex-col items-center w-full py-4">
+              {/* Thin and light rectangular progress style countdown visualizer */}
+              <div className="relative w-[36rem] h-[18rem] max-w-full flex items-center justify-center">
+                <svg viewBox="0 0 320 160" className="w-full h-full select-none" style={{ color: isDark ? '#E05275' : '#1A1A1A' }}>
+                  {/* Outer Case Track - thinner and lighter */}
+                  <rect
+                    x="8"
+                    y="8"
+                    width="304"
+                    height="144"
+                    rx="16"
+                    ry="16"
+                    fill={isDark ? 'rgba(255, 255, 255, 0.01)' : 'rgba(0, 0, 0, 0.005)'}
+                    stroke={isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}
+                    strokeWidth="1.5"
                   />
-                  <motion.circle
-                    cx="88"
-                    cy="88"
-                    r="80"
-                    stroke={isDark ? '#E05275' : '#1A1A1A'}
-                    strokeWidth="8"
-                    fill="transparent"
-                    strokeDasharray={2 * Math.PI * 80}
+
+                  {/* Active Progress Rect - thinner */}
+                  <motion.rect
+                    x="8"
+                    y="8"
+                    width="304"
+                    height="144"
+                    rx="16"
+                    ry="16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    pathLength="100"
                     animate={{
-                      strokeDashoffset: 2 * Math.PI * 80 * (1 - timeLeft / (pomoMinutes * 60))
+                      strokeDashoffset: 100 * (1 - timeLeft / (pomoMinutes * 60))
+                    }}
+                    style={{
+                      strokeDasharray: "100",
                     }}
                     transition={{ duration: 1, ease: 'linear' }}
-                    strokeLinecap="round"
                   />
                 </svg>
 
                 {/* Counter text overlaid */}
-                <div className="absolute flex flex-col items-center justify-center">
-                  <FlipClock seconds={timeLeft} isDark={isDark} size="sm" />
-                  <span className={`text-[10px] font-mono tracking-widest font-black uppercase mt-2 px-2.5 py-0.5 rounded-full ${
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <FlipClock seconds={timeLeft} isDark={isDark} size="lg" />
+                  <span className={`text-[10px] font-mono tracking-widest font-black uppercase mt-5 px-2.5 py-0.5 rounded-full ${
                     sessionType === 'focus' 
                       ? isDark ? 'bg-[#E05275]/15 text-[#E05275]' : 'bg-black text-white'
                       : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
@@ -607,10 +652,10 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
               </div>
 
               {/* Presets */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-center gap-2 px-3">
                 <button
                   onClick={() => setTimerPreset(25, 'focus')}
-                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${
+                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
                     pomoMinutes === 25 && sessionType === 'focus'
                       ? isDark ? 'bg-white/10 text-white' : 'bg-black/5 text-black font-black'
                       : 'opacity-50 hover:opacity-100 text-current'
@@ -621,7 +666,7 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                 <span className="opacity-20 text-xs">|</span>
                 <button
                   onClick={() => setTimerPreset(45, 'focus')}
-                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${
+                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
                     pomoMinutes === 45 && sessionType === 'focus'
                       ? isDark ? 'bg-white/10 text-white' : 'bg-black/5 text-black font-black'
                       : 'opacity-50 hover:opacity-100 text-current'
@@ -632,7 +677,7 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                 <span className="opacity-20 text-xs">|</span>
                 <button
                   onClick={() => setTimerPreset(5, 'shortBreak')}
-                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${
+                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
                     sessionType === 'shortBreak'
                       ? 'bg-emerald-500/10 text-emerald-500 font-black'
                       : 'opacity-50 hover:opacity-100 text-current'
@@ -640,6 +685,49 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                 >
                   5分休息
                 </button>
+                <span className="opacity-20 text-xs">|</span>
+                <div className="flex items-center gap-1.5 pl-1 shrink-0">
+                  <button
+                    onClick={() => {
+                      const newMins = Math.max(1, pomoMinutes - 1);
+                      setTimerPreset(newMins, sessionType);
+                    }}
+                    className={`w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold border transition-colors cursor-pointer ${
+                      isDark ? 'border-white/10 hover:bg-white/5 text-white' : 'border-black/10 hover:bg-black/5 text-black'
+                    }`}
+                    title="减少1分钟"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    max="180"
+                    value={pomoMinutes}
+                    onChange={(e) => {
+                      const val = Math.max(1, Math.min(180, parseInt(e.target.value) || 1));
+                      setTimerPreset(val, sessionType);
+                    }}
+                    className={`w-9 text-center text-[10px] font-mono font-bold rounded-md border py-0.5 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      isDark 
+                        ? 'bg-[#1C1619] border-white/10 text-[#F3EBF0]' 
+                        : 'bg-white border-black/10 text-black'
+                    }`}
+                  />
+                  <button
+                    onClick={() => {
+                      const newMins = Math.min(180, pomoMinutes + 1);
+                      setTimerPreset(newMins, sessionType);
+                    }}
+                    className={`w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold border transition-colors cursor-pointer ${
+                      isDark ? 'border-white/10 hover:bg-white/5 text-white' : 'border-black/10 hover:bg-black/5 text-black'
+                    }`}
+                    title="增加1分钟"
+                  >
+                    +
+                  </button>
+                  <span className="text-[9px] font-bold opacity-60">分钟</span>
+                </div>
               </div>
             </div>
           ) : (
@@ -839,7 +927,7 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
                 </div>
                 <div>
                   <h3 className="text-sm font-serif font-black tracking-tight text-white/90">
-                    智能语音日历专注仪式
+                    日历专注仪式
                   </h3>
                   {activeTask && (
                     <p className="text-[10px] font-mono text-[#E05275] font-bold tracking-widest uppercase flex items-center gap-1 mt-0.5 animate-pulse">
@@ -863,40 +951,52 @@ export default function FocusMode({ tasks, theme, onToggleTask }: FocusModeProps
             </div>
 
             {/* Main Immersive Animation Space */}
-            <div className="flex flex-col items-center justify-center flex-1 max-w-lg w-full py-12">
+            <div className="flex flex-col items-center justify-center flex-1 max-w-2xl w-full py-12">
               {activeTab === 'pomodoro' ? (
                 /* POMODORO DEEP VIEW */
-                <div className="text-center space-y-12 flex flex-col items-center w-full">
-                  {/* Giant circular ring */}
-                  <div className="relative w-64 h-64 flex items-center justify-center">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="128"
-                        cy="128"
-                        r="116"
-                        stroke="rgba(255, 255, 255, 0.03)"
-                        strokeWidth="10"
-                        fill="transparent"
+                <div className="text-center space-y-12 flex flex-col items-center w-full py-6">
+                  {/* Giant thin and light rectangular progress visualizer */}
+                  <div className="relative w-[52rem] h-[28rem] flex items-center justify-center max-w-full">
+                    <svg viewBox="0 0 440 240" className="w-full h-full select-none" style={{ color: '#E05275' }}>
+                      {/* Outer Case Track - thinner and lighter */}
+                      <rect
+                        x="12"
+                        y="12"
+                        width="416"
+                        height="216"
+                        rx="24"
+                        ry="24"
+                        fill="rgba(255, 255, 255, 0.005)"
+                        stroke="rgba(255, 255, 255, 0.08)"
+                        strokeWidth="1.5"
                       />
-                      <motion.circle
-                        cx="128"
-                        cy="128"
-                        r="116"
-                        stroke="#E05275"
-                        strokeWidth="10"
-                        fill="transparent"
-                        strokeDasharray={2 * Math.PI * 116}
+
+                      {/* Active Progress Rect - thinner */}
+                      <motion.rect
+                        x="12"
+                        y="12"
+                        width="416"
+                        height="216"
+                        rx="24"
+                        ry="24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        pathLength="100"
                         animate={{
-                          strokeDashoffset: 2 * Math.PI * 116 * (1 - timeLeft / (pomoMinutes * 60))
+                          strokeDashoffset: 100 * (1 - timeLeft / (pomoMinutes * 60))
+                        }}
+                        style={{
+                          strokeDasharray: "100",
                         }}
                         transition={{ duration: 1, ease: 'linear' }}
-                        strokeLinecap="round"
                       />
                     </svg>
 
-                    <div className="absolute flex flex-col items-center justify-center">
-                      <FlipClock seconds={timeLeft} isDark={true} size="lg" />
-                      <span className="text-xs tracking-widest font-mono font-black uppercase mt-4 px-3 py-1 bg-[#E05275] text-white rounded-full">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <FlipClock seconds={timeLeft} isDark={true} size="xl" isDeep={true} />
+                      <span className="text-xs tracking-widest font-mono font-black uppercase mt-8 px-3.5 py-1 bg-[#E05275] text-white rounded-full shadow-[0_0_15px_rgba(224,82,117,0.4)]">
                         {sessionType === 'focus' ? '深度工作中 FOCUS' : '轻松小憩 BREAK'}
                       </span>
                     </div>

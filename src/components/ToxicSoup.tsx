@@ -224,7 +224,7 @@ export default function ToxicSoup({ theme }: ToxicSoupProps) {
   const [mode, setMode] = useState<'toxic' | 'positive'>(() => {
     const saved = localStorage.getItem('soup_mode');
     if (saved === 'chicken') return 'positive'; // Migration helper
-    return (saved as 'toxic' | 'positive') || 'toxic';
+    return (saved as 'toxic' | 'positive') || 'positive';
   });
 
   const [quoteIndex, setQuoteIndex] = useState<number>(0);
